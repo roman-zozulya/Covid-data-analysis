@@ -77,8 +77,8 @@ ORDER BY total_deaths_count DESC;
 
 -- Break down by continent
 -- the numbers by continents are not correct using the "continent" field
--- the "location" field contains continents as well and this numbers are more correct, so we will be using continents from "location" field
--- also "location field" contains income level instead of name of the continent, we will get rid this from result
+-- the "location" column contains continents as well and this numbers are more correct, so we will be using continents from "location" column
+-- also "location" column contains income level instead of name of the continent, we will get rid this from result
 SELECT [location], 
     MAX(CAST(total_deaths as int)) as total_deaths_count
 FROM ['covid_deaths']
@@ -118,7 +118,7 @@ WITH population_vs_vaccinations AS -- using CTE to get Rolling People Vaccinated
         dea.population, 
         vac.new_vaccinations, 
         SUM(CONVERT(bigint, vac.new_vaccinations)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) as rolling_people_vaccinated
-        -- converting "new_vaccinations" into biging because this number is over ~2.1 billion and out of integet range
+        -- converting "new_vaccinations" into bigint because this number is over ~2.1 billion and out of integer range
     FROM ['covid_deaths'] dea 
         JOIN ['covid_vaccinations'] vac 
         ON dea.[location] = vac.[location]
